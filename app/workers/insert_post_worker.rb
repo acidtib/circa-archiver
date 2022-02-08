@@ -18,8 +18,11 @@ class InsertPostWorker
           reply_user = User.create!(name: r["name"], avatar: r["avatar"])
         end
 
+        # ui sometimes returns random epoch
         unless check_post.replies.find_by_epoch(r["epoch"])
-          check_post.replies.create!(user_id: reply_user.id, reply: r["reply"], date: r["date"], epoch: r["epoch"])
+          unless check_post.replies.find_by(user_id: reply_user.id, reply: r["reply"])
+            check_post.replies.create!(user_id: reply_user.id, reply: r["reply"], date: r["date"], epoch: r["epoch"])
+          end
         end
       end
 

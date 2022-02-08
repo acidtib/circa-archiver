@@ -22,10 +22,10 @@ console:
 	docker-compose run --rm web bundle exec rails c
 
 build.prod:
-  	docker-compose -f docker-compose.prod.yml build
+	docker-compose -f docker-compose.prod.yml build
 
 logs.prod:
-  	docker-compose -f docker-compose.prod.yml logs --follow
+	docker-compose -f docker-compose.prod.yml logs --follow
 
 run.prod:
-  	docker-compose -f docker-compose.prod.yml up -d
+	docker-compose -f docker-compose.prod.yml up -d
