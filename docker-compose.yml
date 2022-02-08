@@ -1,0 +1,69 @@
+volumes:
+  redis-data: null
+  pg-data: null
+  
+services:
+  web:
+    build: .
+    command: bash -c "rm -f tmp/pids/server.pid && bin/rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - HISTFILE=/usr/src/app/log/.bash_history 
+    depends_on:
+      - db
+      - redis
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+      - web
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    environment:
+      RAILS_MAX_THREADS: 5
+
+  redis:
+    image: redis
+    command: redis-server --requirepass password
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis-data:/data'
+
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=changeme
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - 'pg-data:/var/lib/postgresql/data'
+
+  chrome:
+    image: selenium/node-chrome:4.1.2-20220130
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  selenium-hub:
+    image: selenium/hub:4.1.2-20220130
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
