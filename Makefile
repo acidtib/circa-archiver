@@ -18,7 +18,7 @@ db.seed:
 db.rollback:
 	docker-compose run --rm web bundle exec rails db:rollback STEP=1
 
-console:
+docker.dev.console:
 	docker-compose run --rm web bundle exec rails c
 
 build.prod:
@@ -29,3 +29,6 @@ logs.prod:
 
 run.prod:
 	docker-compose -f docker-compose.prod.yml up -d
+
+console.prod:
+	docker-compose -f docker-compose.prod.yml rails c

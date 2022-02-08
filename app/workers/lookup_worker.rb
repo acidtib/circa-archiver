@@ -2,7 +2,8 @@ class LookupWorker
   include Sidekiq::Worker
   sidekiq_options retry: false
 
-  def perform()
+  # LookupWorker.perform_async(scroll: true, scroll_pages: 20)
+  def perform(args = nil)
     payload_users = []
     payload_posts = []
 
@@ -24,11 +25,13 @@ class LookupWorker
 
       sleep(40)
 
-      # 30.times do |i|
-      #   puts "scrolling"
-      #   scroll_down()
-      #   sleep(7)
-      # end
+      if args["scroll"]
+        args["scroll_pages"].times do |i|
+          puts "scrolling"
+          scroll_down()
+          sleep(7)
+        end
+      end
 
       # grab ul with posts
       wait = Selenium::WebDriver::Wait.new(timeout: 40)
