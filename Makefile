@@ -21,14 +21,14 @@ db.rollback:
 docker.dev.console:
 	docker-compose run --rm web bundle exec rails c
 
-build.prod:
+prod.build:
 	docker-compose -f docker-compose.prod.yml build
 
-logs.prod:
+prod.logs:
 	docker-compose -f docker-compose.prod.yml logs --follow
 
-run.prod:
+prod.run:
 	docker-compose -f docker-compose.prod.yml up -d
 
-console.prod:
-	docker-compose -f docker-compose.prod.yml rails c
+prod.console:
+	docker-compose -f docker-compose.prod.yml run --rm web bundle exec rails c

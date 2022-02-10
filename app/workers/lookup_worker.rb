@@ -3,7 +3,7 @@ class LookupWorker
   sidekiq_options retry: false
 
   # LookupWorker.perform_async(scroll: true, scroll_pages: 20)
-  def perform(args = nil)
+  def perform()
     payload_users = []
     payload_posts = []
 
@@ -23,18 +23,17 @@ class LookupWorker
 
       log_in()
 
-      sleep(40)
+      sleep(20)
 
-      if args["scroll"]
-        args["scroll_pages"].times do |i|
-          puts "scrolling"
-          scroll_down()
-          sleep(7)
-        end
+      scroll_page("end")
+      sleep(3)
+      3.times do
+        sleep(1)
+        scroll_page("top")
       end
 
       # grab ul with posts
-      wait = Selenium::WebDriver::Wait.new(timeout: 40)
+      wait = Selenium::WebDriver::Wait.new(timeout: 35)
       wait.until { @driver.find_element(:xpath, '/html/body/div/div/div/div/div[2]/div/div[2]/main/div[3]/ul') }
 
       # click More on post
@@ -97,7 +96,7 @@ class LookupWorker
 
         if post_images.to_s.length != 0
           img_element = @driver.find_element(:css, "img[src='#{post_images.xpath("div/img")[0]["src"]}']")
-          wait = Selenium::WebDriver::Wait.new(timeout: 40)
+          wait = Selenium::WebDriver::Wait.new(timeout: 35)
           wait.until { img_element }
 
           sleep(5)
@@ -106,7 +105,7 @@ class LookupWorker
           @driver.execute_script("arguments[0].scrollIntoView();", img_element)
 
           # open gallery modal
-          wait = Selenium::WebDriver::Wait.new(timeout: 40)
+          wait = Selenium::WebDriver::Wait.new(timeout: 35)
           wait.until { img_element.find_element(:xpath, "../..") }
           img_element.find_element(:xpath, "../..").click
 
@@ -118,7 +117,7 @@ class LookupWorker
           
           sleep(5)
           # close the modal
-          wait = Selenium::WebDriver::Wait.new(timeout: 40)
+          wait = Selenium::WebDriver::Wait.new(timeout: 35)
           wait.until { @driver.find_element(:xpath, "/html/body/div[2]/div[2]/div/div[1]/h2/div/div[2]/div/button") }
           @driver.find_element(:xpath, "/html/body/div[2]/div[2]/div/div[1]/h2/div/div[2]/div/button").click
         end
@@ -177,12 +176,18 @@ class LookupWorker
   def visit_page()
     @driver.navigate.to "https://auth.equityapartments.com/Account/LetsGetStarted?returnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fclient_id%3Dr2p2web%26redirect_uri%3Dhttps%253A%252F%252Fmy.equityapartments.com%252Fcallback%26response_type%3Dtoken%2520id_token%26scope%3Dopenid%2520profile%2520email%2520papi.resident_access%26state%3D1e2caeadc4ff4071b814599efd5865b2%26nonce%3D247f9f0a8e5247b5803b107fa33b4505"
   
-    wait = Selenium::WebDriver::Wait.new(timeout: 40)
+    wait = Selenium::WebDriver::Wait.new(timeout: 35)
     wait.until { @driver.find_element(name: "Username") }
   end
 
-  def scroll_down()
-    @driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+  def scroll_page(to)
+    if to == 'end'
+      @driver.execute_script('window.scrollTo(0,Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight));')
+    elsif to == 'top'
+      @driver.execute_script('window.scrollTo(Math.max(document.documentElement.scrollHeight,document.body.scrollHeight,document.documentElement.clientHeight),0);')
+    else
+      raise "Exception : Invalid Direction (only scroll \"top\" or \"end\")"
+    end
   end
 
   def verify_email()
@@ -194,7 +199,7 @@ class LookupWorker
   end
 
   def get_code()
-    wait = Selenium::WebDriver::Wait.new(timeout: 40)
+    wait = Selenium::WebDriver::Wait.new(timeout: 35)
     wait.until { @driver.find_element(name: "UsePhone") }
   
     @driver.find_element(:css, "[name='UsePhone'][value='False']").click
@@ -209,7 +214,7 @@ class LookupWorker
   end
 
   def enter_code()
-    wait = Selenium::WebDriver::Wait.new(timeout: 40)
+    wait = Selenium::WebDriver::Wait.new(timeout: 35)
     wait.until { @driver.find_element(name: "TwoFactorCode") }
   
     new_access_code = fetch_code()
@@ -223,7 +228,7 @@ class LookupWorker
   end
 
   def log_in()
-    wait = Selenium::WebDriver::Wait.new(timeout: 40)
+    wait = Selenium::WebDriver::Wait.new(timeout: 35)
     wait.until { @driver.find_element(name: "Username") }
   
     set_username = @driver.find_element(name: 'Username')
