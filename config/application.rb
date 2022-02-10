@@ -23,5 +23,20 @@ module CircaArchiver
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    config.active_job.queue_adapter = :sidekiq
+
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address:              ENV["SMTP_HOST"],
+      port:                 587,
+      domain:               ENV["SMTP_DOMAIN"],
+      user_name:            ENV["SMTP_USERNAME"],
+      password:             ENV["SMTP_PASSWORD"],
+      authentication:       'plain',
+      enable_starttls_auto: true,
+      open_timeout:         5,
+      read_timeout:         5 }
+
   end
 end

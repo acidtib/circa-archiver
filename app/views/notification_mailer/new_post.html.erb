@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h3>Hi, <%= @user.name %></h3>
+    <h4>new post has been added to the community postal.</h4>
+    <hr>
+
+    <p><h4>Title:</h4> <%= @post.title %></p>
+    <p><h4>Post Content:</h4></p>
+    <%= @post.content %>
+  </body>
+</html>

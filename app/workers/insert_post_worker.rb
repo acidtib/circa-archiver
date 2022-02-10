@@ -57,7 +57,9 @@ class InsertPostWorker
         end
 
         new_post.replies.create!(user_id: reply_user.id, reply: r["reply"], date: r["date"], epoch: r["epoch"])
-      end 
+      end
+
+      PostNotificationWorker.perform_in(30.seconds, new_post.id)
     end
 
   end
