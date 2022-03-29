@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_10_034534) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_02_10_034534) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "images", force: :cascade do |t|
     t.string "source"
     t.bigint "post_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_images_on_post_id"
   end
 
@@ -31,8 +30,8 @@ ActiveRecord::Schema.define(version: 2022_02_10_034534) do
     t.string "date"
     t.string "epoch"
     t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -42,23 +41,23 @@ ActiveRecord::Schema.define(version: 2022_02_10_034534) do
     t.text "reply"
     t.string "date"
     t.string "epoch"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_replies_on_post_id"
     t.index ["user_id"], name: "index_replies_on_user_id"
   end
 
   create_table "settings", force: :cascade do |t|
     t.string "equity_code"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "avatar"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "email"
   end
 

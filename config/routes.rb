@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 
     scope "posts" do
       get "/", to: "posts#index"
+      get ":post_id", to: "posts#show"
     end
 
     root "home#index"
