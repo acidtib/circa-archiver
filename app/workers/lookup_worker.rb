@@ -208,7 +208,7 @@ class LookupWorker
   end
 
   def fetch_code()
-    sleep(25)
+    sleep(35)
 
     Setting.first.equity_code
   end
