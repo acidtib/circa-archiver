@@ -85,6 +85,8 @@ GEM
     erubi (1.10.0)
     et-orbi (1.2.6)
       tzinfo
+    friendly_id (5.4.2)
+      activerecord (>= 4.0.0)
     fugit (1.5.2)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
@@ -223,6 +225,7 @@ DEPENDENCIES
   annotate
   bootsnap
   debug
+  friendly_id
   kaminari
   nokogiri
   pg (~> 1.1)

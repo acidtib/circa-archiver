@@ -1,4 +1,7 @@
 class Post < ApplicationRecord
+  extend FriendlyId
+  friendly_id :title
+
   belongs_to :user
   has_many :images
   has_many :replies
@@ -18,8 +21,10 @@ end
 #  user_id      :integer          not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  slug         :string
 #
 # Indexes
 #
+#  index_posts_on_slug     (slug) UNIQUE
 #  index_posts_on_user_id  (user_id)
 #

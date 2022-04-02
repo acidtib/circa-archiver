@@ -7,6 +7,7 @@ class PostsController < ApplicationController
       {
         id: post.id,
         title: post.title,
+        slug: post.slug,
         sub_title: post.sub_title,
         content_type: post.content_type,
         date: post.date,
@@ -42,6 +43,7 @@ class PostsController < ApplicationController
     result = {
       id: post.id,
       title: post.title,
+      slug: post.slug,
       sub_title: post.sub_title,
       content_type: post.content_type,
       date: post.date,
