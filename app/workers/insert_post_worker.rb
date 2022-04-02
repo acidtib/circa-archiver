@@ -34,11 +34,17 @@ class InsertPostWorker
       end
     else
       # create new post
+      post_content = args["content"]
+
+      if post_content.end_with?("Hide")
+        post_content = post_content[0...-4]
+      end
+
       new_post = Post.create!(
         title: args["title"],
         sub_title: args["sub_title"],
         content_type: args["content_type"],
-        content: args["content"],
+        content: post_content,
         date: args["date"],
         epoch: args["epoch"],
         user_id: check_user.id
