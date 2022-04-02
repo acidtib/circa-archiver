@@ -70,7 +70,7 @@ class LookupWorker
         post_data[:content_type] = post_node.xpath("div/div/div/div[1]/div[1]/div/div")[0]["title"]
         post_data[:title] = post_node.xpath("div/div/div/div[1]/div[2]/h4[1]").text.strip
         post_data[:sub_title] = post_node.xpath("div/div/div/div[1]/div[2]/h4[2]").text.strip rescue nil
-        post_data[:content] = post_node.xpath("div/div/div/div[1]/div[2]/p").text.gsub("  Hide", "")
+        post_data[:content] = post_node.xpath("div/div/div/div[1]/div[2]/p").text
 
         # post replies
         post_node.xpath("div/div/div/div[2]/div/div[2]/ul/li").each do |lli|
